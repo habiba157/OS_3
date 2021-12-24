@@ -26,23 +26,25 @@ public class PriorityScheduling {
     ArrayList<Process> process = new ArrayList<>();
     ArrayList<Integer> finished = new ArrayList<>();
     ArrayList<Process> temp = new ArrayList<>();
-    //PriorityQueue<Process> pr;
+    
+    sortByPriority s = new sortByPriority();
 
     public PriorityScheduling(ArrayList<Process> process, int contextSwitching) {
         this.process = process;
         this.contextSwitching = contextSwitching;
     }
 
-    private int getNextProcess(int currentTime) {
+    private int getNextProcess() {
         int nextProcess = -1;
+        Collections.sort(process,s);
         for (int i = 0; i < process.size(); i++) {
-            if (!finished.contains(i) && process.get(i).getArrivalTime() <= currentTime) {
+            if (!finished.contains(i)) {
 
                 if (nextProcess == -1) {
                     nextProcess = i;
-                } else if (process.get(i).getPriority() < process.get(nextProcess).getPriority()) {
+                } /**else if (process.get(i).getPriority() < process.get(nextProcess).getPriority()) {
                     nextProcess = i;
-                }
+                }*/
             }
         }
         return nextProcess;
@@ -53,7 +55,7 @@ public class PriorityScheduling {
         int currentProcess = 0;
         for (int i = 0; i < process.size(); i++) {
             do {
-                currentProcess  = getNextProcess(currentTime);
+                currentProcess  = getNextProcess();
                 if (currentProcess == -1) {
                     currentTime++;
                 }
