@@ -9,12 +9,48 @@
  * @author TRUST
  */
 import java.awt.Color;
+
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-public class Process implements Comparable<Process> {
+
+public class Process {
+
     String name;
     Color color;
+    int arrivalTime;
+    int burstTime;
+    int completionTime;
+    int responseTime;
+    int turnaroundTime;
+    int waitingTime;
+    int processing;
+    int priority;
+    int quantumTime;
+    int AGATFactor;
+    ArrayList<Integer> historyOfQuantum = new ArrayList<>();
+    
+    public Process(){
+        
+    }
+
+    public Process(String name, Color color, int arrivalTime, int burstTime, int priority) {
+        this.name = name;
+        setColor(color);
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.priority = priority;
+    }
+
+    
+
+    public int getProcessing() {
+        return processing;
+    }
+
+    public void setProcessing(int processing) {
+        this.processing = processing;
+    }
 
     public String getName() {
         return name;
@@ -35,7 +71,9 @@ public class Process implements Comparable<Process> {
             Logger.getLogger(Process.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+   public void setColor (Color color){
+       this.color = color;
+   }
     public int getArrivalTime() {
         return arrivalTime;
     }
@@ -52,6 +90,14 @@ public class Process implements Comparable<Process> {
         this.burstTime = burstTime;
     }
 
+    public int getResponseTime() {
+        return responseTime;
+    }
+
+    public void setResponseTime(int responseTime) {
+        this.responseTime = responseTime;
+    }
+
     public int getCompletionTime() {
         return completionTime;
     }
@@ -60,20 +106,20 @@ public class Process implements Comparable<Process> {
         this.completionTime = completionTime;
     }
 
+    public int getTurnaroundTime() {
+        return turnaroundTime;
+    }
+
+    public void setTurnaroundTime(int turnaroundTime) {
+        this.turnaroundTime = turnaroundTime;
+    }
+
     public int getWaitingTime() {
         return waitingTime;
     }
 
     public void setWaitingTime(int waitingTime) {
         this.waitingTime = waitingTime;
-    }
-
-    public int getTurnAroundTime() {
-        return turnAroundTime;
-    }
-
-    public void setTurnAroundTime(int turnAroundTime) {
-        this.turnAroundTime = turnAroundTime;
     }
 
     public int getPriority() {
@@ -89,18 +135,7 @@ public class Process implements Comparable<Process> {
     }
 
     public void setQuantumTime(int quantumTime) {
-        quantumList.add(quantumTime);
         this.quantumTime = quantumTime;
-    }
-
-    
-
-    public int getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(int lastTime) {
-        this.lastTime = lastTime;
     }
 
     public int getAGATFactor() {
@@ -110,53 +145,13 @@ public class Process implements Comparable<Process> {
     public void setAGATFactor(int AGATFactor) {
         this.AGATFactor = AGATFactor;
     }
-
-    
-
-    
-    int arrivalTime,burstTime,completionTime,waitingTime,turnAroundTime,priority,quantumTime,processTime,responseTime,lastTime,AGATFactor;
-    ArrayList<Integer> quantumList = new ArrayList<>();
-    public Process(){}
-    public Process (String name,String color,int arrivalTime,int burstTime,int priority){
-        this.name = name;
-        try {
-            setColor(color);
-        } catch (NoSuchFieldException ex) {
-            Logger.getLogger(Process.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        this.arrivalTime = arrivalTime;
-        this.burstTime = burstTime;
-        this.priority = priority;
-        
-        setProcessTime(burstTime);
-        responseTime =0;
-        lastTime = arrivalTime;
-        //AGATFactor ;
-    }
-
-    public int getProcessTime() {
-        return processTime;
-    }
-
-    public void setProcessTime(int processTime) {
-        this.processTime = processTime;
-    }
-
-    public int getResponseTime() {
-        return responseTime;
-    }
-
-    public void setResponseTime(int responseTime) {
-        this.responseTime = responseTime;
-    }
     
     public void run(){
-        System.out.println("Process " + name + " is running" );
-        processTime--;
+        System.out.println("Excection order is -> "+getName());
+        processing--;
     }
 
-    @Override
-    public int compareTo(Process p) {
-        return this.arrivalTime - p.arrivalTime; 
-    }
+   
+
+    
 }

@@ -8,73 +8,81 @@
  *
  * @author TRUST
  */
-//import java.awt.Color;
 import java.util.*;
 
 public class SJFScheduling {
 
-    ArrayList<Process> processes;
-    ArrayList<Integer> finished = new ArrayList<>();
+    private ArrayList<Process> processes;
+    private ArrayList<Integer> finished = new ArrayList<Integer>();
 
+    
     public SJFScheduling(ArrayList<Process> processes) {
         this.processes = processes;
-
+       
+    }
+    
+    private int getNextProcess(int currentTime) {
+        int nextProcess = -1;
+        for (int i = 0; i < processes.size(); i++) {
+            if (!finished.contains(i) && processes.get(i).getArrivalTime() <= currentTime) { 
+                
+                if (nextProcess == -1) {
+                    nextProcess = i;
+                } 
+                else if (processes.get(i).getBurstTime() < processes.get(nextProcess).getBurstTime()) {
+                    nextProcess = i;
+                }
+            }
+        }
+        return nextProcess;
     }
 
+
     public void running() {
-        int currentTime = 1;
+        
+        int currentTime = 0;
         int currentProcess = 0;
         for (int i = 0; i < processes.size(); i++) {
-            //int temp_Process = currentProcess;
-            while (currentProcess == -1) {
+            
+            do {
                 currentProcess = getNextProcess(currentTime);
                 if (currentProcess == -1) {
                     currentTime++;
-
+                    //gui.AddColor( currTime , temp, new Color(255,255,255));	
                 }
-            }
+            } while (currentProcess == -1);
 
             processes.get(currentProcess).run();
+            //gui.AddColor( currTime+1 , currProcess, processes.get(currProcess).getColor() ,processes.get(currProcess).getBurstTime() );
 
-            int WT = currentTime - processes.get(currentProcess).getArrivalTime();
-            int TAT = processes.get(currentProcess).getWaitingTime() + processes.get(currentProcess).getBurstTime();
-            processes.get(currentProcess).setWaitingTime(WT);
-            processes.get(currentProcess).setTurnAroundTime(TAT);
+            processes.get(currentProcess).setWaitingTime(currentTime - processes.get(currentProcess).getArrivalTime());
+            processes.get(currentProcess).setTurnaroundTime(processes.get(currentProcess).getWaitingTime() + processes.get(currentProcess).getBurstTime());
             currentTime += processes.get(currentProcess).getBurstTime();
             finished.add(currentProcess);
 
         }
     }
 
-    private int getNextProcess(int currentTime) {
-        int next = -1;
-        for (int i = 0; i < processes.size(); i++) {
-            if (!finished.contains(i) && (processes.get(i).getArrivalTime() <= currentTime)) {
-
-                if (next == -1) {
-                    next = i;
-                } else if (processes.get(i).getBurstTime() < processes.get(next).getBurstTime()) {
-                    next = i;
-                }
-            }
-        }
-        return next;
-    }
-
-    public double getAverageWT() {
+    
+    public double calcAvgWT() {
         double sum = 0.0;
         for (Process p : processes) {
-            sum = sum + p.getWaitingTime();
+            sum = sum+p.getWaitingTime();
         }
-        return sum / processes.size();
+        double avg = sum/processes.size();
+
+        return avg;
     }
 
-    public double getAverageTAT() {
+    public double calcAvgTAT() {
         double sum = 0.0;
         for (Process p : processes) {
-            sum = sum + p.getTurnAroundTime();
+            sum = sum+p.getTurnaroundTime();
         }
+        
+        double avg = sum/processes.size();
 
-        return sum / processes.size();
+        return avg;
     }
+
 }
