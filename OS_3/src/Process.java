@@ -29,9 +29,9 @@ public class Process {
     int quantumTime;
     int AGATFactor;
     ArrayList<Integer> historyOfQuantum = new ArrayList<>();
-    
-    public Process(){
-        
+
+    public Process() {
+
     }
 
     public Process(String name, Color color, int arrivalTime, int burstTime, int priority) {
@@ -41,8 +41,6 @@ public class Process {
         this.burstTime = burstTime;
         this.priority = priority;
     }
-
-    
 
     public int getProcessing() {
         return processing;
@@ -71,9 +69,11 @@ public class Process {
             Logger.getLogger(Process.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   public void setColor (Color color){
-       this.color = color;
-   }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
     public int getArrivalTime() {
         return arrivalTime;
     }
@@ -145,13 +145,12 @@ public class Process {
     public void setAGATFactor(int AGATFactor) {
         this.AGATFactor = AGATFactor;
     }
-    
-    public void run(){
-        System.out.println("Excection order is -> "+getName());
+
+    public void run() {
+        //int i = 0;
         processing--;
+        System.out.println("Excection order is -> " + this.getName());
+        
     }
 
-   
-
-    
 }

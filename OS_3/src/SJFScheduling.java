@@ -12,8 +12,8 @@ import java.util.*;
 
 public class SJFScheduling {
 
-    private ArrayList<Process> processes;
-    private ArrayList<Integer> finished = new ArrayList<Integer>();
+     ArrayList<Process> processes;
+     ArrayList<Integer> finished = new ArrayList<>();
 
     sortByBT s = new sortByBT();
     
@@ -22,20 +22,18 @@ public class SJFScheduling {
        
     }
     
-    private int getNextProcess() {
+    private int getNextProcess(int currentTime) {
         int nextProcess = -1;
         for (int i = 0; i < processes.size(); i++) {
-            
-            Collections.sort(processes, s);
-            
-            if (!finished.contains(i) /**&& processes.get(i).getArrivalTime() <= currentTime*/) { 
+            if (!finished.contains(i) && processes.get(i).getArrivalTime() <= currentTime) { 
                 
                 if (nextProcess == -1) {
                     nextProcess = i;
                 } 
-                /**else if (processes.get(i).getBurstTime() < processes.get(nextProcess).getBurstTime()) {
+                else if (processes.get(i).getBurstTime() < processes.get(nextProcess).getBurstTime()) {
+                    //Collections.sort(processes, s);
                     nextProcess = i;
-                }*/
+                }
             }
         }
         return nextProcess;
@@ -46,10 +44,11 @@ public class SJFScheduling {
         
         int currentTime = 0;
         int currentProcess = 0;
+        Collections.sort(processes, s);
         for (int i = 0; i < processes.size(); i++) {
             
             do {
-                currentProcess = getNextProcess();
+                currentProcess = getNextProcess(currentTime);
                 if (currentProcess == -1) {
                     currentTime++;
                     //gui.AddColor( currTime , temp, new Color(255,255,255));	

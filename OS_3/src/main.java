@@ -66,8 +66,9 @@ public class main {
                 ps.running();
 
                 for (int i = 0; i < n; i++) {
-                    System.out.println("Waiting Time for process " + (i + 1) + " is -> " + processes.get(i).getWaitingTime());
-                    System.out.println("Turnaround Time for process " + (i + 1) + " is -> " + processes.get(i).getTurnaroundTime());
+                    
+                    System.out.println("\nWaiting Time for process " + processes.get(ps.finished.get(i)).getName() + " is -> " + processes.get(ps.finished.get(i)).getWaitingTime());
+                    System.out.println("\nTurnaround Time for process " + processes.get(ps.finished.get(i)).getName() + " is -> " + processes.get(ps.finished.get(i)).getTurnaroundTime());
 
                 }
                 System.out.println("Average Waiting Time is ->  " + ps.calcAvgWT());
@@ -75,15 +76,16 @@ public class main {
                 break;
             case 2:
 
-                SJFScheduling shortestJobFirst = new SJFScheduling(processes);
-                shortestJobFirst.running();
-                for (int i = 0; i < n; i++) {
-                    System.out.println("Waiting Time for process " + processes.get(i).getName() + " is -> " + processes.get(i).getWaitingTime());
-                    System.out.println("Turnaround Time for process " + processes.get(i).getName() + " is -> " + processes.get(i).getTurnaroundTime());
+                SJFScheduling sjf = new SJFScheduling(processes);
+                sjf.running();
+                for (int i = 0; i < processes.size(); i++) {
+                    
+                    System.out.println("Waiting Time for process " + processes.get(sjf.finished.get(i)).getName() + " is -> " + processes.get(sjf.finished.get(i)).getWaitingTime());
+                    System.out.println("Turnaround Time for process " + processes.get(sjf.finished.get(i)).getName() + " is -> " + processes.get(sjf.finished.get(i)).getTurnaroundTime());
 
                 }
-                System.out.println("Average Waiting Time is ->  " + shortestJobFirst.calcAvgWT());
-                System.out.println("Average Turnaround Time is ->" + shortestJobFirst.calcAvgTAT() + "\n");
+                System.out.println("Average Waiting Time is ->  " + sjf.calcAvgWT());
+                System.out.println("Average Turnaround Time is ->" + sjf.calcAvgTAT() + "\n");
                 break;
 
             case 5:
