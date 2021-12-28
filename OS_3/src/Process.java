@@ -26,8 +26,10 @@ public class Process {
     int waitingTime;
     int processing;
     int priority;
+    int remainingTime;
     int quantumTime;
     int AGATFactor;
+    boolean done = false;
     ArrayList<Integer> historyOfQuantum = new ArrayList<>();
 
     public Process() {
@@ -147,7 +149,7 @@ public class Process {
     }
 
     public void run() {
-        //int i = 0;
+        
         processing--;
         System.out.println("Excection order is -> " + this.getName());
         

@@ -62,6 +62,7 @@ public class SJFScheduling {
             processes.get(currentProcess).setTurnaroundTime(processes.get(currentProcess).getWaitingTime() + processes.get(currentProcess).getBurstTime());
             currentTime += processes.get(currentProcess).getBurstTime();
             finished.add(currentProcess);
+           
 
         }
     }

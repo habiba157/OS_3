@@ -12,7 +12,7 @@ import java.util.*;
 
 public class main {
 
-    static public void main(String[] arg) throws NoSuchFieldException {
+    public static void main(String[] arg) throws NoSuchFieldException {
         int n;
         //int RRQuantum;
         int contextSwitching;
@@ -50,48 +50,65 @@ public class main {
             processes.add(p);
         }
 
-        System.out.println("\n\tSelect the Scheduler you want to use : ");
-        System.out.println("\n\t1-Non-preemptive Priority Scheduling.");
-        System.out.println("\n\t2-Non-Preemptive Shortest- Job First (SJF)");
-        System.out.println("\n\t3-Shortest-Remaining Time First (SRTF) Scheduling");
-        System.out.println("\n\t4-AG Scheduling");
-        System.out.println("\n\t5-End");
-        int choice = input.nextInt();
+        while (true) {
 
-        switch (choice) {
+            System.out.println("\n\tSelect the Scheduler you want to use : ");
+            System.out.println("\n\t1-Non-preemptive Priority Scheduling.");
+            System.out.println("\n\t2-Non-Preemptive Shortest- Job First (SJF)");
+            System.out.println("\n\t3-Shortest-Remaining Time First (SRTF) Scheduling");
+            System.out.println("\n\t4-AG Scheduling");
+            System.out.println("\n\t5-End");
 
-            case 1:
+            int choice = input.nextInt();
 
-                PriorityScheduling ps = new PriorityScheduling(processes, contextSwitching);
-                ps.running();
+            switch (choice) {
 
-                for (int i = 0; i < n; i++) {
-                    
-                    System.out.println("\nWaiting Time for process " + processes.get(ps.finished.get(i)).getName() + " is -> " + processes.get(ps.finished.get(i)).getWaitingTime());
-                    System.out.println("\nTurnaround Time for process " + processes.get(ps.finished.get(i)).getName() + " is -> " + processes.get(ps.finished.get(i)).getTurnaroundTime());
+                case 1:
 
-                }
-                System.out.println("Average Waiting Time is ->  " + ps.calcAvgWT());
-                System.out.println("Average Turnaround Time is ->" + ps.calcAvgTAT() + "\n");
-                break;
-            case 2:
+                    PriorityScheduling ps = new PriorityScheduling(processes, contextSwitching);
+                    ps.running();
 
-                SJFScheduling sjf = new SJFScheduling(processes);
-                sjf.running();
-                for (int i = 0; i < processes.size(); i++) {
-                    
-                    System.out.println("Waiting Time for process " + processes.get(sjf.finished.get(i)).getName() + " is -> " + processes.get(sjf.finished.get(i)).getWaitingTime());
-                    System.out.println("Turnaround Time for process " + processes.get(sjf.finished.get(i)).getName() + " is -> " + processes.get(sjf.finished.get(i)).getTurnaroundTime());
+                    for (int i = 0; i < n; i++) {
 
-                }
-                System.out.println("Average Waiting Time is ->  " + sjf.calcAvgWT());
-                System.out.println("Average Turnaround Time is ->" + sjf.calcAvgTAT() + "\n");
-                break;
+                        System.out.println("\nWaiting Time for process " + processes.get(ps.finished.get(i)).getName() + " is -> " + processes.get(ps.finished.get(i)).getWaitingTime());
+                        System.out.println("\nTurnaround Time for process " + processes.get(ps.finished.get(i)).getName() + " is -> " + processes.get(ps.finished.get(i)).getTurnaroundTime());
+                        System.out.println("\n\t\tPriority of " + processes.get(ps.finished.get(i)).getName() + " is " + processes.get(ps.finished.get(i)).getPriority());
 
-            case 5:
-                System.exit(0);
-            //break;
+                    }
+                    System.out.println("Average Waiting Time is ->  " + ps.calcAvgWT());
+                    System.out.println("Average Turnaround Time is ->" + ps.calcAvgTAT() + "\n");
+                    break;
+                case 2:
 
+                    SJFScheduling sjf = new SJFScheduling(processes);
+                    sjf.running();
+                    for (int i = 0; i < processes.size(); i++) {
+
+                        System.out.println("Waiting Time for process " + processes.get(sjf.finished.get(i)).getName() + " is -> " + processes.get(sjf.finished.get(i)).getWaitingTime());
+                        System.out.println("Turnaround Time for process " + processes.get(sjf.finished.get(i)).getName() + " is -> " + processes.get(sjf.finished.get(i)).getTurnaroundTime());
+
+                    }
+                    System.out.println("Average Waiting Time is ->  " + sjf.calcAvgWT());
+                    System.out.println("Average Turnaround Time is ->" + sjf.calcAvgTAT() + "\n");
+                    break;
+                case 3:
+
+                    SRTFScheduling srtf = new SRTFScheduling(processes, contextSwitching);
+                    srtf.run();
+                    for (int i = 0; i < processes.size(); i++) {
+
+                        System.out.println("Waiting Time for process " + processes.get(i).getName() + " is -> " + processes.get(i).getWaitingTime());
+                        System.out.println("Turnaround Time for process " + processes.get(i).getName() + " is -> " + processes.get(i).getTurnaroundTime());
+
+                    }
+
+                    break;
+
+                case 5:
+                    System.exit(0);
+                //break;
+
+            }
         }
     }
 }

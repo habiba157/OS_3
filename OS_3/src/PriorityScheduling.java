@@ -25,7 +25,7 @@ public class PriorityScheduling {
 
     ArrayList<Process> process = new ArrayList<>();
     ArrayList<Integer> finished = new ArrayList<>();
-    ArrayList<Process> temp = new ArrayList<>();
+    ArrayList<Process> waiting = new ArrayList<>();
     
     sortByPriority s = new sortByPriority();
    
@@ -41,7 +41,9 @@ public class PriorityScheduling {
             if (!finished.contains(i) && process.get(i).getArrivalTime() <= currentTime) {
 
                 if (nextProcess == -1) {
+                    
                     nextProcess = i;
+                   
                 } else if (process.get(i).getPriority() < process.get(nextProcess).getPriority()) {
                     nextProcess = i;
                 }
@@ -58,20 +60,25 @@ public class PriorityScheduling {
             do {
                 currentProcess  = getNextProcess(currentTime);
                 if (currentProcess == -1) {
+                   
+                    waiting.add(process.get(i));
                     currentTime++;
+                    //System.out.println(waiting.get(i).getName());
                 }
             } while (currentProcess == -1);
 
             process.get(currentProcess).run();
-            // process.get(0).setWaitingTime(currentTime - process.get(0).getArrivalTime());
-
-           // process.get(currentProcess).setWaitingTime(currentTime  - process.get(currentProcess-1).getArrivalTime());
+            
             
             process.get(currentProcess).setWaitingTime(currentTime - process.get(currentProcess).getArrivalTime());
 
             process.get(currentProcess).setTurnaroundTime(process.get(currentProcess).getWaitingTime() + process.get(currentProcess).getBurstTime());
             currentTime = currentTime + process.get(currentProcess).getBurstTime() + contextSwitching;
             finished.add(currentProcess);
+            
+            for(int j = 1;j<process.size()&&process.get(j).getArrivalTime()<=currentTime;j++){
+            Math.max(--process.get(j).priority, 0);
+            }
         }
 
     }
