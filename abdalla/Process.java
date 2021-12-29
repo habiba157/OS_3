@@ -1,5 +1,5 @@
-
 package cpu;
+
 
 import java.awt.Color;
 
@@ -13,7 +13,8 @@ public class Process implements Comparable<Process>{
     Color color;
     int arrivalTime , burstTime , priority , quantumTime;
 
-    int startTime , finishTime ,  AGATFactor;
+    int startTime , finishTime ,   remainingTime;
+    double AGATFactor ;
 
     int completionTime;
     int responseTime;
@@ -26,15 +27,30 @@ public class Process implements Comparable<Process>{
 
     public Process() {
     this.name="";
-
+     ////////////////////////////////
+     this.remainingTime = burstTime ;
+     ///////////////////////////////
     }
 
-    public Process(String name, Color color, int arrivalTime, int burstTime, int priority) {
+    public Process(String name, int arrivalTime, int burstTime, int priority , int quantumTime) {
         this.name = name;
-        setColor(color);
+       // setColor(color);
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = priority;
+        //this.remainingTime=burstTime;
+        this.quantumTime = quantumTime;
+        ////////////////////////////////
+        this.remainingTime = burstTime ;
+        ///////////////////////////////
+    }
+
+    public int getRemainingTime() {
+        return remainingTime;
+    }
+
+    public void setRemainingTime(int remainingTime) {
+        this.remainingTime = remainingTime;
     }
 
     public int getProcessing() {
@@ -133,11 +149,11 @@ public class Process implements Comparable<Process>{
         this.quantumTime = quantumTime;
     }
 
-    public int getAGATFactor() {
+    public double getAGATFactor() {
         return AGATFactor;
     }
 
-    public void setAGATFactor(int AGATFactor) {
+    public void setAGATFactor(double AGATFactor) {
         this.AGATFactor = AGATFactor;
     }
     public int getStartTime() {
@@ -160,7 +176,7 @@ public class Process implements Comparable<Process>{
         //int i = 0;
         processing--;
         System.out.println("Excection order is -> " + this.getName());
-        
+
     }
 
     @Override
