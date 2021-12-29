@@ -2,10 +2,7 @@ package pk1;
 
 
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Vector;
+import java.util.*;
 
 public class AGATSchd {
     public ArrayList<Process> processes = new ArrayList<>();
@@ -138,8 +135,37 @@ public class AGATSchd {
         }
     }
 
+    public int calcNonPrem(Process p)
+    {
+        int nonPreemptiveAGTime = (int) Math.ceil(p.getQuantumTime() * 0.4);
+        if(nonPreemptiveAGTime<p.getRemainingTime()) return nonPreemptiveAGTime;
+        else      return p.getRemainingTime();
+    }
+    ////////////////////////////////////////////
 
+    public int pre_emptiveAGAT(Process p, int time, int nPreTime)
+    {
+        int processTime = 0;
+        while(p.getRemainingTime() > 0 )
+        {
+            Process p2 = this.getMinimumAGATFactor(time);
 
+            if(!Objects.equals(p2.getName(), p.getName()))
+                break;
+
+            p.setRemainingTime(p.getRemainingTime()-1);
+            time++;
+            processTime++;
+
+            if(p.getQuantumTime() == processTime + nPreTime)
+                break;
+        }
+
+        return processTime;
+    }
+    /////////////////////////////////////////////
+
+    
 
 
 
