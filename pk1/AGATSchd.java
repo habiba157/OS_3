@@ -7,8 +7,8 @@ import java.util.*;
 public class AGATSchd {
     public ArrayList<Process> processes = new ArrayList<>();
     public Queue<Process> readyQueue = new LinkedList<Process>();
-    //public ArrayList<Process> outputTest = new ArrayList<Process>();
-    //public ArrayList<Process> processes2 = new ArrayList<Process>();
+    public ArrayList<Process> output = new ArrayList<Process>();
+    public ArrayList<Process> finishedPro = new ArrayList<Process>();
 
     public double V1() {
         double v1;
@@ -43,7 +43,7 @@ public class AGATSchd {
     }
     /////////////////////////////////////////
 
-    public boolean ProcessIsFinished(){
+    public boolean ProcessFinishedQn(){
         for (Process process : processes) {
             if (process.getQuantumTime() != 0)
                 return false;
@@ -118,21 +118,24 @@ public class AGATSchd {
     {
         for (Process process : this.processes) {
             process.setRemainingTime(process.getBurstTime());
-            //process.setAGATFactor(CalcAGATFactor( process.getPriority() , process.getArrivalTime() , process.getBurstTime()));
-            this.setProcessFactor();
+            process.setAGATFactor(CalcAGATFactor( process.getPriority() , process.getArrivalTime() , process.getBurstTime()));
+            //this.setProcessFactor();
         }
     }
     ///////////////////////////////////////////////
 
     public void setProcessFactor()
     {
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         for (Process process : this.processes) {
             if(process.getRemainingTime()!=0){
                 process.setAGATFactor(CalcAGATFactor( process.getPriority() , process.getArrivalTime() , process.getRemainingTime()));
+                System.out.println(process.getName() + "    Arrival: "+process.getArrivalTime() +"    remaining time: " + process.getRemainingTime() );
                 continue;
             }
             process.setAGATFactor(0);
         }
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     }
 
     public int calcNonPrem(Process p)
@@ -165,7 +168,104 @@ public class AGATSchd {
     }
     /////////////////////////////////////////////
 
-    
+
+
+
+   /* public void start()
+    {
+        // first we need to sort processes according to arrival time in ascending order
+        Collections.sort(this.processes);
+
+        // make remaining time = burst time as we didn't start scheduling
+        this.setProcessesValue();
+
+        int time  = this.processes.get(0).getArrivalTime() , preIndex = -1 , currIndex;
+        Process current = null , previous=null;
+        StringBuilder output= new StringBuilder();
+        output.append("time: " +time+"      " +this.processes.get(0).getName() );
+
+        System.out.println(output);
+
+
+
+    }*/
+   public void printResults() {
+       int totalTurnaroundTime = 0;
+       int totalWaitingTime = 0;
+       for(Process p: output){
+           p.setTurnaroundTime(p.getWaitingTime() + p.getBurstTime());
+           System.out.println(p);
+       }
+       for(Process p: finishedPro){
+           totalTurnaroundTime += p.getTurnaroundTime();
+           totalWaitingTime += p.getWaitingTime();
+       }
+       System.out.println("AVG - Turnaround Time: " + (double) totalTurnaroundTime/finishedPro.size());
+       System.out.println("AVG - Waiting Time: " + (double) totalWaitingTime/finishedPro.size());
+   }
+
+    public void start()
+    {
+        // first we need to sort processes according to arrival time in ascending order
+        Collections.sort(this.processes);
+
+        // make remaining time = burst time as we didn't start scheduling
+        this.setProcessesValue();
+
+        int time  = this.processes.get(0).getArrivalTime() , preIndex = -1 , currIndex;
+        Process current = null , previous=null;
+
+        while (!this.ProcessFinishedQn())
+        {
+            if(preIndex==-1)
+            {
+                currIndex=0;
+                current=this.processes.get(currIndex);
+            }
+            else{
+                this.setProcessFactor();
+                current=this.suitableProcess(time , preIndex);
+                currIndex=this.returnIndexOfProcess(current);
+
+            }
+
+            if(current==previous)
+            {
+                readyQueue.add(this.processes.get(currIndex));
+                preIndex=this.returnIndexOfProcess(current)+1;
+                continue;
+            }
+            if(this.processes.get(currIndex).getQuantumTime()!=0) this.processes.get(currIndex).setStartTime(time);
+
+            int npre=this.calcNonPrem(current) , prem=this.pre_emptiveAGAT(current , time , npre);
+            time+=npre;
+            this.processes.get(currIndex).setRemainingTime(this.processes.get(currIndex).getRemainingTime()-npre);
+            time+=prem;
+            if(current.getRemainingTime()==0)
+            {
+                this.processes.get(currIndex).setQuantumTime(0);
+                this.finishedPro.add(current);
+            }
+            else if ((npre+prem)==current.getQuantumTime()){
+                this.processes.get(currIndex).quantumTime+=2;
+                readyQueue.add(current);
+            }
+            else{
+                int diff=this.processes.get(currIndex).getQuantumTime()-(npre+prem);
+                this.processes.get(currIndex).quantumTime+=diff;
+                readyQueue.add(current);
+            }
+            this.processes.get(currIndex).waitingTime+= (this.processes.get(currIndex).getStartTime()-this.processes.get(currIndex).getArrivalTime());
+            this.processes.get(currIndex).setArrivalTime(time);
+            previous=current;
+            preIndex=this.returnIndexOfProcess(current);
+            output.add(current);
+        }
+        this.printResults();
+
+    }
+
+
 
 
 
