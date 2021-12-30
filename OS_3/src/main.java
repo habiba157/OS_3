@@ -98,13 +98,6 @@ public class main {
 
                     SRTFScheduling srtf = new SRTFScheduling(processes, contextSwitching);
                     srtf.run();
-                    for (int i = 0; i < processes.size(); i++) {
-
-                        System.out.println("Waiting Time for process " + processes.get(i).getName() + " is -> " + processes.get(i).getWaitingTime());
-                        System.out.println("Turnaround Time for process " + processes.get(i).getName() + " is -> " + processes.get(i).getTurnaroundTime());
-
-                    }
-
                     break;
                     
                 case 4:
