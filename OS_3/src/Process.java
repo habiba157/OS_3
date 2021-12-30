@@ -29,6 +29,7 @@ public class Process {
     int remainingTime;
     int quantumTime;
     int AGATFactor;
+    int startTime ;
     boolean done = false;
     ArrayList<Integer> historyOfQuantum = new ArrayList<>();
 
@@ -38,16 +39,37 @@ public class Process {
          
         return (currentTime - this.getArrivalTime());
     }
-    public Process() {
-
+   public Process() {
+        this.name="";
+        ////////////////////////////////
+        this.remainingTime = burstTime ;
+        ///////////////////////////////
     }
-
     public Process(String name, Color color, int arrivalTime, int burstTime, int priority) {
         this.name = name;
         setColor(color);
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
         this.priority = priority;
+    }
+    public Process(String name, int arrivalTime, int burstTime, int priority , int quantumTime) {
+        this.name = name;
+        // setColor(color);
+        this.arrivalTime = arrivalTime;
+        this.burstTime = burstTime;
+        this.priority = priority;
+        //this.remainingTime=burstTime;
+        this.quantumTime = quantumTime;
+        ////////////////////////////////
+        this.remainingTime = burstTime ;
+        ///////////////////////////////
+    }
+    public int getRemainingTime() {
+        return remainingTime;
+    }
+
+    public void setRemainingTime(int remainingTime) {
+        this.remainingTime = remainingTime;
     }
 
     public int getProcessing() {
@@ -154,6 +176,13 @@ public class Process {
         this.AGATFactor = AGATFactor;
     }
 
+     public int getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
     public void run() {
 
         processing--;
