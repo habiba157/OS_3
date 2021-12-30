@@ -1,20 +1,17 @@
 package pk1;
 
-
-
 import java.util.*;
 
 public class AGATSchd {
-    public ArrayList<Process> processes = new ArrayList<>();
+    public ArrayList<Process> processes = new ArrayList<>() ,  finishedPro = new ArrayList<Process>();
     public Queue<Process> readyQueue = new LinkedList<Process>();
-    public ArrayList<Process> output = new ArrayList<Process>();
-    public ArrayList<Process> finishedPro = new ArrayList<Process>();
+
 
     public double V1() {
         double v1;
         int result = processes.get(processes.size()-1).getArrivalTime();
         if (result > 10)    v1 = result/10F;
-         else   v1 = 1;
+        else   v1 = 1;
         return  v1;
     }
     /////////////////////////////////
@@ -57,10 +54,13 @@ public class AGATSchd {
         int indx = 0 , i = 0;
         while( (i < this.processes.size()) && (this.processes.get(i).getArrivalTime() <= time) )
         {
-            if(this.processes.get(i).getAGATFactor()  < minAGAT && this.processes.get(i).getQuantumTime() != 0)
+            if(this.processes.get(i).getAGATFactor() < minAGAT && this.processes.get(i).getQuantumTime() != 0)
             {
                 minAGAT = this.processes.get(i).getAGATFactor();
                 indx = i;
+                ///////////////////////////////
+                //System.out.println("++++" +processes.get(i).getName()+ "   "+this.processes.get(i).getAGATFactor());
+                ///////////////////////////////
             }
             i++;
         }
@@ -122,7 +122,7 @@ public class AGATSchd {
             //this.setProcessFactor();
         }
     }
-    ///////////////////////////////////////////////
+    ///////////////////////////////////////
 
     public void setProcessFactor()
     {
@@ -171,99 +171,117 @@ public class AGATSchd {
 
 
 
-   /* public void start()
-    {
-        // first we need to sort processes according to arrival time in ascending order
-        Collections.sort(this.processes);
-
-        // make remaining time = burst time as we didn't start scheduling
-        this.setProcessesValue();
-
-        int time  = this.processes.get(0).getArrivalTime() , preIndex = -1 , currIndex;
-        Process current = null , previous=null;
-        StringBuilder output= new StringBuilder();
-        output.append("time: " +time+"      " +this.processes.get(0).getName() );
-
-        System.out.println(output);
-
-
-
-    }*/
-   public void printResults() {
-       int totalTurnaroundTime = 0;
-       int totalWaitingTime = 0;
-       for(Process p: output){
-           p.setTurnaroundTime(p.getWaitingTime() + p.getBurstTime());
-           System.out.println(p);
-       }
-       for(Process p: finishedPro){
-           totalTurnaroundTime += p.getTurnaroundTime();
-           totalWaitingTime += p.getWaitingTime();
-       }
-       System.out.println("AVG - Turnaround Time: " + (double) totalTurnaroundTime/finishedPro.size());
-       System.out.println("AVG - Waiting Time: " + (double) totalWaitingTime/finishedPro.size());
-   }
+    /* public void start()
+     {
+         // first we need to sort processes according to arrival time in ascending order
+         Collections.sort(this.processes);
+         // make remaining time = burst time as we didn't start scheduling
+         this.setProcessesValue();
+         int time  = this.processes.get(0).getArrivalTime() , preIndex = -1 , currIndex;
+         Process current = null , previous=null;
+         StringBuilder output= new StringBuilder();
+         output.append("time: " +time+"      " +this.processes.get(0).getName() );
+         System.out.println(output);
+     }*/
+    public void printProcesses() {
+        int totalTT = 0 , totalWT = 0;
+        for(Process p: finishedPro){
+            p.setTurnaroundTime(p.getWaitingTime() + p.getBurstTime());
+            totalTT += p.getTurnaroundTime();
+            totalWT += p.getWaitingTime();
+            System.out.println(p);
+        }
+        System.out.println("Average Turnaround Time: " + (double) totalTT/finishedPro.size());
+        System.out.println("Average Waiting Time: " + (double) totalWT/finishedPro.size());
+    }
 
     public void start()
     {
+
+
+        ////////////////////////////////////
         // first we need to sort processes according to arrival time in ascending order
         Collections.sort(this.processes);
 
         // make remaining time = burst time as we didn't start scheduling
         this.setProcessesValue();
 
-        int time  = this.processes.get(0).getArrivalTime() , preIndex = -1 , currIndex;
-        Process current = null , previous=null;
+        int preIndex = -1 , currentIndex ,  time=0;
+        Process current = null ,  previous=null;
 
-        while (!this.ProcessFinishedQn())
+
+
+
+         time  = this.processes.get(0).getArrivalTime();
+         while( !this.ProcessFinishedQn())
         {
-            if(preIndex==-1)
+
+            if(preIndex == -1)
             {
-                currIndex=0;
-                current=this.processes.get(currIndex);
-            }
-            else{
-                this.setProcessFactor();
-                current=this.suitableProcess(time , preIndex);
-                currIndex=this.returnIndexOfProcess(current);
+                currentIndex = 0;
+                current = this.processes.get(currentIndex);
 
             }
-
-            if(current==previous)
+            else
             {
-                readyQueue.add(this.processes.get(currIndex));
-                preIndex=this.returnIndexOfProcess(current)+1;
+                setProcessFactor();
+                current = this.suitableProcess(time, preIndex);
+                currentIndex = this.returnIndexOfProcess(current);
+
+            }
+            if (current==previous){
+                readyQueue.add(processes.get(currentIndex));
+                preIndex = this.returnIndexOfProcess(current)+1;
                 continue;
             }
-            if(this.processes.get(currIndex).getQuantumTime()!=0) this.processes.get(currIndex).setStartTime(time);
 
-            int npre=this.calcNonPrem(current) , prem=this.pre_emptiveAGAT(current , time , npre);
-            time+=npre;
-            this.processes.get(currIndex).setRemainingTime(this.processes.get(currIndex).getRemainingTime()-npre);
-            time+=prem;
-            if(current.getRemainingTime()==0)
-            {
-                this.processes.get(currIndex).setQuantumTime(0);
+            if(this.processes.get(currentIndex).getQuantumTime() != 0)      this.processes.get(currentIndex).setStartTime(time);
+
+
+            int nprem = this.calcNonPrem(current);
+            time += nprem;
+
+            this.processes.get(currentIndex).remainingTime -= nprem;
+
+
+            int preem = this.pre_emptiveAGAT(current, time, nprem);
+            time += preem;
+
+
+            if(current.remainingTime == 0) {
                 this.finishedPro.add(current);
+                this.processes.get(currentIndex).setQuantumTime(0);
             }
-            else if ((npre+prem)==current.getQuantumTime()){
-                this.processes.get(currIndex).quantumTime+=2;
-                readyQueue.add(current);
-            }
-            else{
-                int diff=this.processes.get(currIndex).getQuantumTime()-(npre+prem);
-                this.processes.get(currIndex).quantumTime+=diff;
-                readyQueue.add(current);
-            }
-            this.processes.get(currIndex).waitingTime+= (this.processes.get(currIndex).getStartTime()-this.processes.get(currIndex).getArrivalTime());
-            this.processes.get(currIndex).setArrivalTime(time);
-            previous=current;
-            preIndex=this.returnIndexOfProcess(current);
-            output.add(current);
-        }
-        this.printResults();
+            else if((nprem + preem) == current.getQuantumTime())
+            {
 
+                this.processes.get(currentIndex).quantumTime += 2;
+                readyQueue.add(current);
+            }
+            else
+            {
+                int diff = (this.processes.get(currentIndex).quantumTime - (nprem + preem));
+                this.processes.get(currentIndex).quantumTime += diff;
+                readyQueue.add(current);
+            }
+
+
+
+            int waiting = this.processes.get(currentIndex).getStartTime() - this.processes.get(currentIndex).arrivalTime;
+            this.processes.get(currentIndex).waitingTime += waiting;
+            this.processes.get(currentIndex).arrivalTime = time;
+
+
+            preIndex = this.returnIndexOfProcess(current);
+            previous=current;
+
+
+        }
+        this.printProcesses();
+
+        ///////////////////////////////////////
     }
+
 
 
 
