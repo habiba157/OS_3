@@ -96,7 +96,7 @@ public class main {
                     break;
                 case 3:
 
-                    SRTFScheduling srtf = new SRTFScheduling(processes, contextSwitching);
+                    ShortestRemainingTimeFirst srtf = new ShortestRemainingTimeFirst(processes, contextSwitching);
                     srtf.run();
                     break;
                     
