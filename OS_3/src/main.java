@@ -34,15 +34,18 @@ public class main {
             System.out.println("\nEnter Process Name :");
             p.setName(input.nextLine());
 
+            System.out.println("Enter Process Burst Time :");
+            p.setBurstTime(input.nextInt());
+            
             System.out.println("Enter Process Arrival Time :");
             p.setArrivalTime(input.nextInt());
 
-            System.out.println("Enter Process Burst Time :");
-            p.setBurstTime(input.nextInt());
-
             System.out.println("Enter Process priority :");
             p.setPriority(input.nextInt());
-
+            
+            System.out.println("Enter Process Quantum:");
+            p.setQuantumTime(input.nextInt());
+            
             input = new Scanner(System.in);
             System.out.println("Enter Process Color :");
             p.setColor(input.nextLine());
@@ -103,7 +106,13 @@ public class main {
                     }
 
                     break;
-
+                    
+                case 4:
+                    AGATSchd agat = new AGATSchd();
+                    agat.processes=processes;
+                    agat.start();
+                    break;
+                    
                 case 5:
                     System.exit(0);
                 
