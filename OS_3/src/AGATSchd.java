@@ -34,8 +34,9 @@ public class AGATSchd {
     }
     ////////////////////////////////////////
 
-    public double CalcAGATFactor(int priority, int arrivalTime, int burstTime){
-        double v1= V1()  , v2= V2() ,result = ((10 - priority)+Math.ceil(arrivalTime/v1)+Math.ceil(burstTime/v2));
+    public int CalcAGATFactor(int priority, int arrivalTime, int burstTime){
+        double v1= V1()  , v2= V2() ;
+        int result = (int)((10 - priority)+Math.ceil(arrivalTime/v1)+Math.ceil(burstTime/v2));
         return result;
     }
     /////////////////////////////////////////
