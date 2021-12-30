@@ -9,18 +9,17 @@
  * @author TRUST
  */
 import java.util.*;
+
 public class sortByPriority implements Comparator<Process> {
 
     @Override
     public int compare(Process t, Process t1) {
-        
-        if(t.getPriority()-t1.getPriority() == 0){
-            return t.getArrivalTime()-t1.getArrivalTime();
-        }else{
-           return t.getPriority() - t1.getPriority();
+
+        if (t.getPriority() - t1.getPriority() == 0) {
+            return t.getArrivalTime() - t1.getArrivalTime();
+        } else {
+            return t.getPriority() - t1.getPriority();
         }
     }
-    
-   
-    
+
 }

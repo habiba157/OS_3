@@ -32,6 +32,12 @@ public class Process {
     boolean done = false;
     ArrayList<Integer> historyOfQuantum = new ArrayList<>();
 
+    int age;
+    public int getAge(int currentTime){
+        
+         
+        return currentTime - this.getArrivalTime();
+    }
     public Process() {
 
     }
@@ -149,10 +155,10 @@ public class Process {
     }
 
     public void run() {
-        
+
         processing--;
         System.out.println("Excection order is -> " + this.getName());
-        
+
     }
 
 }

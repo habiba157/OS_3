@@ -19,7 +19,7 @@ public class main {
 
         ArrayList<Process> processes = new ArrayList<>();
 
-        //@SuppressWarnings("resource")
+        
         Scanner input = new Scanner(System.in);
 
         System.out.println("Enter number of processes :");
@@ -106,7 +106,7 @@ public class main {
 
                 case 5:
                     System.exit(0);
-                //break;
+                
 
             }
         }
