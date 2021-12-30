@@ -213,7 +213,8 @@ public class AGATSchd {
 
 
 
-
+        StringBuilder output= new StringBuilder();
+        output.append("time: " +time+"      " +this.processes.get(0).getName()+"\n" );
          time  = this.processes.get(0).getArrivalTime();
          while( !this.ProcessFinishedQn())
         {
@@ -272,13 +273,14 @@ public class AGATSchd {
             int waiting = this.processes.get(currentIndex).getStartTime() - this.processes.get(currentIndex).arrivalTime;
             this.processes.get(currentIndex).waitingTime += waiting;
             this.processes.get(currentIndex).arrivalTime = time;
-
+            output.append("time: " +time+"      " +this.processes.get(currentIndex).getName()+"\n" );
 
             preIndex = this.returnIndexOfProcess(current);
             previous=current;
 
 
         }
+         System.out.println(output);
         this.printProcesses();
 
         ///////////////////////////////////////
