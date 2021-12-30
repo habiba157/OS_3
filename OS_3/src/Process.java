@@ -189,5 +189,14 @@ public class Process {
         System.out.println("Excection order is -> " + this.getName());
 
     }
+    @Override
+    public String toString() {
+        return "Process{" +
+                "processName='" + name + '\'' +
+                ", arrivalTime=" + arrivalTime +
+                ", waitingTime=" + waitingTime +
+                ", turnaroundTime=" + turnaroundTime +
+                '}';
+    }
 
 }
