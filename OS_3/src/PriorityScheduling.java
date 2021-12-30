@@ -43,7 +43,7 @@ public class PriorityScheduling {
 
                     nextProcess = i;
 
-                } else if (process.get(i).getPriority() < process.get(nextProcess).getPriority()) {
+                } else if (process.get(i).getPriority()-process.get(i).getAge(currentTime) < process.get(nextProcess).getPriority()-process.get(nextProcess).getAge(currentTime)) {
                     nextProcess = i;
                 }
             }
@@ -74,11 +74,11 @@ public class PriorityScheduling {
             currentTime = currentTime + process.get(currentProcess).getBurstTime() + contextSwitching;
             finished.add(currentProcess);
 
-            for (int j = 1; j < process.size() && process.get(j).getArrivalTime() <= currentTime; j++) {
+            /*for (int j = 1; j < process.size() && process.get(j).getArrivalTime() <= currentTime; j++) {
                 if (process.get(j).getWaitingTime() >= 5) {
                     Math.max(--process.get(j).priority, 0);
                 }
-            }
+            }*/
         }
 
     }

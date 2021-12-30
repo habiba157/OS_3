@@ -41,8 +41,7 @@ public class SRTFScheduling {
         int min = Integer.MAX_VALUE;
         while (numOfProcesses > 0) {
             for (int i = 0; i < processes.size(); i++) {
-                if (processes.get(i).getArrivalTime() <= currentTime && totalBT.get(i) > 0
-                        && totalBT.get(i) < minimumRemaining) {
+                if (processes.get(i).getArrivalTime() <= currentTime && totalBT.get(i) > 0&& totalBT.get(i) < minimumRemaining) {
                     minimumRemaining = totalBT.get(i);
                     currentProcess = i;
                     cond = true;

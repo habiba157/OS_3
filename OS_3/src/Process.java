@@ -36,7 +36,7 @@ public class Process {
     public int getAge(int currentTime){
         
          
-        return currentTime - this.getArrivalTime();
+        return (currentTime - this.getArrivalTime());
     }
     public Process() {
 
